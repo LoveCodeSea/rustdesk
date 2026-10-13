@@ -2,6 +2,11 @@ name: Build Windows x64 (RustDesk Flutter)
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - shaonian-build
+    paths:
+      - '.github/workflows/build-windows-x64.yml'
 
 env:
   SCITER_RUST_VERSION: "1.75"
