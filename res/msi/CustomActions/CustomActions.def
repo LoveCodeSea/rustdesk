@@ -1,0 +1,17 @@
+LIBRARY "CustomActions"
+
+EXPORTS
+    CustomActionHello
+    RemoveRuntimeGeneratedFiles
+    TerminateProcesses
+    AddFirewallRules
+    SetPropertyIsServiceRunning
+    TryStopDeleteService
+    CreateStartService
+    TryDeleteStartupShortcut
+    SetPropertyFromConfig
+    AddRegSoftwareSASGeneration
+    RemoveAmyuniIdd
+    InstallPrinter
+    UninstallPrinter
+    SetPrinterInstallDefault
