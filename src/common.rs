@@ -2645,12 +2645,21 @@ pub fn get_hwid() -> Bytes {
 
 #[inline]
 pub fn get_builtin_option(key: &str) -> String {
-    config::BUILTIN_SETTINGS
+    let v = config::BUILTIN_SETTINGS
         .read()
         .unwrap()
         .get(key)
         .cloned()
-        .unwrap_or_default()
+        .unwrap_or_default();
+    if v.is_empty() {
+        // ShaoNian build: compiled-in defaults for a branded client.
+        // A custom.txt entry still wins, since it fills BUILTIN_SETTINGS above.
+        match key {
+            "hide-powered-by-me" | "hide-network-settings" => return "Y".to_owned(),
+            _ => {}
+        }
+    }
+    v
 }
 
 #[inline]
