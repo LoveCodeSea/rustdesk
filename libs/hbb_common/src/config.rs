@@ -116,6 +116,10 @@ const CHARS: &[char] = &[
 
 pub const RENDEZVOUS_SERVERS: &[&str] = &["rustdesk.vzzw.com"];
 pub const RS_PUB_KEY: &str = "bh4JvONOwgQ+AWOR1vKbEiFcCpaJTz1CnjBKLtPusPw=";
+// ShaoNian build: API (web console) endpoint, used when no api-server option is set.
+// Kept as an explicit constant because it cannot be derived from RENDEZVOUS_SERVERS:
+// the scheme is https while the derived form would be http.
+pub const API_SERVER: &str = "https://rustdesk.vzzw.com:21114";
 
 pub const RENDEZVOUS_PORT: i32 = 21116;
 pub const RELAY_PORT: i32 = 21117;

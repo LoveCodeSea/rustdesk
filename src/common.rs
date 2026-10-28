@@ -1256,7 +1256,7 @@ fn get_api_server_(api: String, custom: String) -> String {
             return format!("http://{}", s);
         }
     }
-    "https://admin.rustdesk.com".to_owned()
+    config::API_SERVER.to_owned()
 }
 
 #[inline]
@@ -2405,7 +2405,14 @@ pub fn create_symmetric_key_msg(their_pk_b: [u8; 32]) -> (Bytes, Bytes, secretbo
 
 #[inline]
 pub fn using_public_server() -> bool {
-    crate::get_custom_rendezvous_server(get_option("custom-rendezvous-server")).is_empty()
+    if !crate::get_custom_rendezvous_server(get_option("custom-rendezvous-server")).is_empty() {
+        return false;
+    }
+    // A client compiled with its own default server (config::RENDEZVOUS_SERVERS, see
+    // config.rs) is not using the public server either, so the "set up your own server"
+    // hint must stay hidden. Upstream keeps rs-*.rustdesk.com here, which stays public.
+    let builtin = config::RENDEZVOUS_SERVERS;
+    builtin.is_empty() || builtin.iter().any(|s| s.to_lowercase().ends_with("rustdesk.com"))
 }
 
 pub struct ThrottledInterval {
@@ -2655,7 +2662,9 @@ pub fn get_builtin_option(key: &str) -> String {
         // ShaoNian build: compiled-in defaults for a branded client.
         // A custom.txt entry still wins, since it fills BUILTIN_SETTINGS above.
         match key {
-            "hide-powered-by-me" | "hide-network-settings" => return "Y".to_owned(),
+            "hide-powered-by-me" | "hide-network-settings" | "allow-https-21114" => {
+                return "Y".to_owned()
+            }
             _ => {}
         }
     }
