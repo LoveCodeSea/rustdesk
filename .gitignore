@@ -17,6 +17,9 @@ cert.pfx
 *png
 *svg
 *jpg
+# Brand logo assets must be tracked: *_logo*.png is ignored by the rule above,
+# but Flutter needs these bundled for the in-app header logo.
+!flutter/assets/logo*.png
 sciter.dll
 **pdb
 src/bridge_generated.rs

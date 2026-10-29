@@ -14,6 +14,8 @@
 | 配置目录 | `%APPDATA%\ShaoNian` |
 | IPC 管道 | `\\.\pipe\ShaoNian\query...` |
 | 隐私模式辅助进程 | `RuntimeBroker_shaonian.exe` |
+| 应用图标 / 托盘图标 / 窗口图标 | 蓝底白色「少年」 |
+| 首页 Logo | 「少年远程」横向字标（`flutter/assets/logo*.png`） |
 
 ## 编译（GitHub Actions）
 
@@ -32,6 +34,32 @@
 | Release 附件 | `ShaoNianDesk-1.5.0-x86_64.exe` | 便携单文件版 |
 | Release 附件 | `ShaoNianDesk-1.5.0-x86_64.msi` | MSI 安装包 |
 | Actions artifact | `rustdesk-unsigned-msi-template-x86_64` | MSI 模板 |
+
+## 品牌信息（已去除官方痕迹）
+
+客户端不再把用户引向 RustDesk 官方页面，所有可点击链接集中定义在 `flutter/lib/consts.dart`：
+
+| 常量 | 值 | 使用位置 |
+| --- | --- | --- |
+| `kBrandWebsiteUrl` | `https://rustdesk.vzzw.com` | 桌面/移动端「关于」、更新按钮、自建服务器引导、Linux 帮助链接、页脚 |
+| `kBrandWebsiteLabel` | `rustdesk.vzzw.com` | 「关于」与设置页显示的链接文字 |
+| `kBrandPrivacyUrl` | `https://rustdesk.vzzw.com/privacy.html` | 隐私声明、安装页最终用户协议 |
+| `kBrandCopyright` | `少年远程` | 桌面「关于」页版权行 |
+
+其他已替换项：
+
+- 应用图标：`res/icon.ico`（16–256 全尺寸）、`res/tray-icon.ico`、`flutter/windows/runner/resources/app_icon.ico`；PNG 同步更新 `res/32x32.png`、`res/64x64.png`、`res/128x128.png`、`res/128x128@2x.png`、`res/icon.png`、`res/mac-icon.png`。图标由 `tools/gen_brand_icons.py` 生成，可直接重跑（依赖 Pillow）。
+- 安装包元数据：`res/msi/preprocess.py` 的 ARP 联系/帮助/自述链接改为 `https://rustdesk.vzzw.com`，厂商默认值改为 `ShaoNian`；`res/msi/Package/License.rtf` 中的 `rustdesk.com`、`RustDesk`、`Purslane Tech` 已清除。
+- 可执行文件版本信息：`Cargo.toml`、`libs/portable/Cargo.toml`、`flutter/windows/runner/Runner.rc` 的公司名与版权改为 `ShaoNian`。
+- Rust 侧帮助链接：`libs/hbb_common/src/config.rs` 的 `LINK_DOCS_*`、`src/client.rs` 的 `SCRAP_X11_REF_URL`、`src/lang/en.rs` 的两条文档链接均指向 `https://rustdesk.vzzw.com`。
+- Sciter 界面（仅 32 位回退用）：`src/ui/index.tis`、`src/ui/install.tis` 的链接与版权同样已替换。
+
+注意：
+
+- `is_public()`（`src/common.rs`）保留 `rustdesk.com` 域名判断，仅用于识别「官方公共服务」以关闭审计上报与打洞选项，不属于展示内容，不要改。
+- 自动检查更新沿用上游逻辑：`check_software_update()` 在 `APP_NAME != "RustDesk"` 时直接返回，因此不会请求 `api.rustdesk.com`。
+- MSI 的语言文件使用 Codepage 1252，厂商名与许可证文本保持 ASCII（`ShaoNian`），避免 WiX 编译失败；带中文的品牌名只出现在运行时界面与图标中。
+- `https://rustdesk.vzzw.com/privacy.html` 尚未在该服务器上部署，点击会 404，需要自行放页面。
 
 ## 内置默认值（编译进二进制）
 

@@ -27,15 +27,15 @@ g_arpsystemcomponent = {
     },
     "Contact": {
         "msi": "ARPCONTACT",
-        "v": "https://github.com/rustdesk/rustdesk",
+        "v": "https://rustdesk.vzzw.com",
     },
     "HelpLink": {
         "msi": "ARPHELPLINK",
-        "v": "https://github.com/rustdesk/rustdesk/issues/",
+        "v": "https://rustdesk.vzzw.com",
     },
     "ReadMe": {
         "msi": "ARPREADME",
-        "v": "https://github.com/rustdesk/rustdesk",
+        "v": "https://rustdesk.vzzw.com",
     },
 }
 
@@ -93,7 +93,7 @@ def make_parser():
         "-m",
         "--manufacturer",
         type=str,
-        default="Purslane Tech Pte. Ltd.",
+        default="ShaoNian",
         help="The app manufacturer.",
     )
     return parser
@@ -504,6 +504,8 @@ def update_license_file(app_name):
     with open(license_file, "r", encoding="utf-8") as f:
         license_content = f.read()
     license_content = license_content.replace("website rustdesk.com and other ", "")
+    license_content = license_content.replace("https://rustdesk.com", "https://rustdesk.vzzw.com")
+    license_content = license_content.replace("rustdesk.com", "rustdesk.vzzw.com")
     license_content = license_content.replace("RustDesk", app_name)
     license_content = re.sub(r"Purslane(?: Tech Pte\.)? Ltd", app_name, license_content, flags=re.IGNORECASE)
     with open(license_file, "w", encoding="utf-8") as f:

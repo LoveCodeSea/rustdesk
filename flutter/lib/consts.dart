@@ -7,6 +7,13 @@ import 'package:get/get.dart';
 const int kMaxVirtualDisplayCount = 4;
 const int kAllVirtualDisplay = -1;
 
+// ShaoNian: brand-owned endpoints. Keep every user-visible link here so the
+// client never sends users to upstream RustDesk pages.
+const String kBrandWebsiteUrl = 'https://rustdesk.vzzw.com';
+const String kBrandWebsiteLabel = 'rustdesk.vzzw.com';
+const String kBrandPrivacyUrl = 'https://rustdesk.vzzw.com/privacy.html';
+const String kBrandCopyright = '少年远程';
+
 const double kDesktopRemoteTabBarHeight = 28.0;
 const int kInvalidWindowId = -1;
 const int kMainWindowId = 0;
